@@ -85,7 +85,7 @@ item to the original CBOR data item; it does not define an algorithm
 for an actual packer.  Different packers can differ in the amount of
 effort they invest in arriving at a minimal packed form.
 
-Packed CBOR can employs two kinds of optimization:
+Packed CBOR can employ two kinds of optimization:
 
 - structure sharing: substructures (data items) that occur repeatedly
   in the original CBOR data item can be collapsed to a simple
@@ -114,8 +114,8 @@ The term "byte" is used in its now customary sense as a synonym for
 "octet".
 Where bit arithmetic is explained, this document uses the notation
 familiar from the programming language C (including C++14's 0bnnn
-binary literals), except that the operator "\*\*" stands for
-exponentiation.
+binary literals), except that, in the plain text form of this document.
+the operator "^" stands for exponentiation.
 
 # Packed CBOR
 
@@ -130,7 +130,11 @@ shared = any
 {: #fig-cddl title="Packed CBOR in CDDL"}
 
 (This assumes the allocation of tag number 6, which is motivated
-further below.)
+further below.
+Note that the semantics of Tag 6 depend on its content: An integer
+turns the tag into a shared reference, a string into a prefix
+reference, and an array into a complete Packed CBOR data item as
+described above.)
 
 The original CBOR data item can be reconstructed by recursively
 replacing shared and prefix references encountered in the rump by
@@ -182,7 +186,8 @@ depending on what type of suffix is being used.
 Taking into account the encoding, there is one one-byte prefix
 reference, 32 two-byte references, 4096 three-byte references, and
 268435456 five-byte references.  268439585
-(2\*\*28+2\*\*12+2\*\*5+2\*\*0) is an artificial limit, but should be
+(2<sup>28</sup>+2<sup>12</sup>+2<sup>5</sup>+2<sup>0</sup>) is an
+artificial limit, but should be
 high enough that there, again, is no practical limit to how many
 prefix items might be used in a Packed CBOR item.
 
@@ -194,10 +199,6 @@ simple values.  Since the objective is compression, this is warranted
 if and only if there is consensus that this specific format could be
 useful for a wide area of applications, while maintaining reasonable
 simplicity in particular at the side of the consumer.
-
-Note that the semantics of Tag 6 depend on its content: An integer
-turns the tag into a shared reference, a string into a prefix
-reference, and an array into a complete Packed CBOR data item.
 
 A maliciously crafted Packed CBOR data item might contain a reference
 loop.  A consumer/decompressor MUST protect against that.
@@ -235,6 +236,11 @@ The security considerations of RFC 7049 apply.
 
 Loops in the Packed CBOR can be used as a denial of service attack,
 see {{discussion}}.
+
+As the unpacking is deterministic, packed forms can be used as signing
+inputs.  (Note that if external dictionaries are added to cbor-packed,
+this requires additional consideration.)
+
 
 --- back
 
