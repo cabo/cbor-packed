@@ -104,17 +104,14 @@ sharing only.
 Terminology         {#terms}
 ------------
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in
-RFC 2119 {{!RFC2119}}.
+{::boilerplate bcp14}
 
 The definitions of {{-bis}} apply.
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
 Where bit arithmetic is explained, this document uses the notation
 familiar from the programming language C (including C++14's 0bnnn
-binary literals), except that, in the plain text form of this document.
+binary literals), except that, in the plain text form of this document,
 the operator "^" stands for exponentiation.
 
 # Packed CBOR
